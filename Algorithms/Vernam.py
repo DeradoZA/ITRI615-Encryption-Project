@@ -1,7 +1,8 @@
 import random
 
 if __name__ == "__main__":
-    plainText = input("Input the plaintext you would like to encrypt: ")
+    plainText = input(
+        "Input the plaintext you would like to encrypt with vernam cipher: ")
 
     plainTextLength = len(plainText)
 
