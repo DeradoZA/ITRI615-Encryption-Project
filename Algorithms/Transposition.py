@@ -1,55 +1,75 @@
-def TranspositionEncrypt(rowLength, plainText):
-    letterMatrix = []
-    Row = []
-    cipherText = ""
+from PIL import Image
+import PIL
 
-    for char in plainText:
+
+def TranspositionEncrypt(rowLength, fileBytes):
+    byteMatrix = []
+    Row = []
+    cipherBytes = b""
+
+    for byte in fileBytes:
         if len(Row) == rowLength:
-            letterMatrix.append(Row)
+            byteMatrix.append(Row)
             Row = []
 
-        Row.append(char)
+        Row.append(bytes([byte]))
 
     if Row:
-        if len(Row) < 4:
-            lengthDiff = rowLength - len(Row)
-            for filler in range(lengthDiff):
-                Row.append(" ")
+        if len(Row) < rowLength:
+            paddingValue = rowLength - len(Row)
+            for filler in range(paddingValue):
+                Row.append(b" ")
 
-            letterMatrix.append(Row)
+            byteMatrix.append(Row)
 
     for index in range(rowLength):
-        for row in letterMatrix:
-            cipherText = cipherText + row[index]
-            
-    return cipherText, letterMatrix, lengthDiff
+        for row in byteMatrix:
+            cipherBytes += row[index]
 
-def TranspositionDecrypt(letterMatrix, paddingValue, rowLength):
-    plainText = ""
+    return cipherBytes, byteMatrix, paddingValue
 
-    letterMatrixFinalRow = len(letterMatrix)
-    
+
+def TranspositionDecrypt(byteMatrix, paddingValue):
+    plainBytes = b""
+
+    letterMatrixFinalRow = len(byteMatrix)
+
     for _ in range(paddingValue):
-        letterMatrix[-1].pop()
-        
-    for row in letterMatrix:
-        for letter in row:
-            plainText = plainText + letter
-            
-    return plainText, letterMatrix
+        byteMatrix[-1].pop()
+
+    for row in byteMatrix:
+        for byte in row:
+            plainBytes = plainBytes + byte
+
+    return plainBytes, byteMatrix
+
 
 if __name__ == "__main__":
-    plainText = input(
-        "Input the plaintext you would like to encrypt using transposition cipher: ")
+    file = open("../Testingfiles/Test8.png", "rb")
+
+    fileBytes = file.read()
 
     rowLength = int(input("Input the row length you would like to use: "))
-    
-    cipherText, letterMatrix, paddingValue = TranspositionEncrypt(rowLength, plainText)
-    
-    print("This is the encrypted text: " + cipherText)
-    
-    decryptedText, letterMatrix2 = TranspositionDecrypt(letterMatrix, paddingValue, rowLength)
-    
-    print("This is the decrypted text: " + decryptedText)
 
-    
+    with PIL.Image.open("../Testingfiles/Test8.png") as normalImage:
+        normalImage.show()
+
+    cipherBytes, byteMatrix, paddingValue = TranspositionEncrypt(
+        rowLength, fileBytes)
+
+    try:
+        with open("EncryptedFile.png", "wb") as encryptedFile:
+            encryptedFile.write(cipherBytes)
+
+        with Image.open("EncryptedFile.png") as encryptedImage:
+            encryptedImage.show()
+    except PIL.UnidentifiedImageError:
+        print("The file is encrypted and cannot be read properly.")
+
+    plainBytes, byteMatrix = TranspositionDecrypt(byteMatrix, paddingValue)
+
+    with open("DecryptedFile.png", "wb") as decryptedFile:
+        decryptedFile.write(plainBytes)
+
+    with Image.open("DecryptedFile.png") as decryptedImage:
+        decryptedImage.show()
