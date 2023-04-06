@@ -39,24 +39,6 @@ if __name__ == "__main__":
 
     fileBytes = file.read()
 
-    with Image.open("../Testingfiles/Test8.png") as normalImage:
-        normalImage.show()
-
     cipherBytes, vernamKeyBytes = VernamEncrypt(fileBytes)
 
-    try:
-        with open("EncryptedFile.png", "wb") as encryptedFile:
-            encryptedFile.write(cipherBytes)
-
-        with Image.open("EncryptedFile.png") as encryptedImage:
-            encryptedImage.show()
-    except PIL.UnidentifiedImageError:
-        print("The file is encrypted and cannot be read properly.")
-
     decryptedBytes = VernamDecrypt(cipherBytes, vernamKeyBytes)
-
-    with open("DecryptedFile.png", "wb") as decryptedFile:
-        decryptedFile.write(decryptedBytes)
-
-    with Image.open("DecryptedFile.png") as decryptedImage:
-        decryptedImage.show()
