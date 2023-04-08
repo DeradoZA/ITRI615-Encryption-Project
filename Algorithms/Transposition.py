@@ -2,10 +2,14 @@ from PIL import Image
 import PIL
 
 
-def TranspositionEncrypt(rowLength, fileBytes):
+def TranspositionEncrypt(rowLength, originalFile):
     byteMatrix = []
     Row = []
     cipherBytes = b""
+
+    file = open(originalFile, "rb")
+
+    fileBytes = file.read()
 
     for byte in fileBytes:
         if len(Row) == rowLength:
@@ -44,14 +48,31 @@ def TranspositionDecrypt(byteMatrix, paddingValue):
     return plainBytes, byteMatrix
 
 
-if __name__ == "__main__":
-    file = open("../Testingfiles/Test8.png", "rb")
+def CreateEncryptedFile(cipherBytes):
+    encryptedFileName = "Encrypted.png"
+    encryptedFile = open(encryptedFileName, "wb")
+    encryptedFile.write(cipherBytes)
 
-    fileBytes = file.read()
+    encryptedFile.close()
+
+
+def CreateDecryptedFile(plainBytes):
+    decryptedFileName = "Decrypted.png"
+    decryptedFile = open(decryptedFileName, "wb")
+    decryptedFile.write(plainBytes)
+
+    decryptedFile.close()
+
+
+if __name__ == "__main__":
+    originalFile = input("File name or path to file name:")
 
     rowLength = int(input("Input the row length you would like to use: "))
 
     cipherBytes, byteMatrix, paddingValue = TranspositionEncrypt(
-        rowLength, fileBytes)
+        rowLength, originalFile)
 
     plainBytes, byteMatrix = TranspositionDecrypt(byteMatrix, paddingValue)
+
+    CreateEncryptedFile(cipherBytes)
+    CreateDecryptedFile(plainBytes)
