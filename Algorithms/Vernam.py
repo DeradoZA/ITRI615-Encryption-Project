@@ -1,7 +1,5 @@
 import random
-from PIL import Image
-import PIL
-
+import os
 
 def VernamEncrypt(fileName):
 
@@ -39,16 +37,20 @@ def VernamDecrypt(cipherText, vernamKey):
     return decryptedBytes
 
 
-def CreateEncryptedFile(cipherBytes):
-    encryptedFileName = "Encrypted.png"
+def CreateEncryptedFile(cipherBytes, originalFile):
+    
+    fileInfo = os.path.splitext(originalFile)
+    encryptedFileName = "Encrypted" + fileInfo[1]
     encryptedFile = open(encryptedFileName, "wb")
     encryptedFile.write(cipherBytes)
 
     encryptedFile.close()
 
 
-def CreateDecryptedFile(plainBytes):
-    decryptedFileName = "Decrypted.png"
+def CreateDecryptedFile(plainBytes, originalFile):
+    
+    fileInfo = os.path.splitext(originalFile)
+    decryptedFileName = "Decrypted" + fileInfo[1]
     decryptedFile = open(decryptedFileName, "wb")
     decryptedFile.write(plainBytes)
 
@@ -63,5 +65,5 @@ if __name__ == "__main__":
 
     decryptedBytes = VernamDecrypt(cipherBytes, vernamKeyBytes)
 
-    CreateEncryptedFile(cipherBytes)
-    CreateDecryptedFile(decryptedBytes)
+    CreateEncryptedFile(cipherBytes, originalFile)
+    CreateDecryptedFile(decryptedBytes, originalFile)

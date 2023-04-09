@@ -1,6 +1,4 @@
-from PIL import Image
-import PIL
-
+import os
 
 def TranspositionEncrypt(rowLength, originalFile):
     byteMatrix = []
@@ -48,16 +46,18 @@ def TranspositionDecrypt(byteMatrix, paddingValue):
     return plainBytes, byteMatrix
 
 
-def CreateEncryptedFile(cipherBytes):
-    encryptedFileName = "Encrypted.png"
+def CreateEncryptedFile(cipherBytes, originalFile):
+    fileInfo = os.path.splitext(originalFile)
+    encryptedFileName = "Encrypted" + fileInfo[1]
     encryptedFile = open(encryptedFileName, "wb")
     encryptedFile.write(cipherBytes)
 
     encryptedFile.close()
 
 
-def CreateDecryptedFile(plainBytes):
-    decryptedFileName = "Decrypted.png"
+def CreateDecryptedFile(plainBytes, originalFile):
+    fileInfo = os.path.splitext(originalFile)
+    decryptedFileName = "Decrypted" + fileInfo[1]
     decryptedFile = open(decryptedFileName, "wb")
     decryptedFile.write(plainBytes)
 
@@ -74,5 +74,5 @@ if __name__ == "__main__":
 
     plainBytes, byteMatrix = TranspositionDecrypt(byteMatrix, paddingValue)
 
-    CreateEncryptedFile(cipherBytes)
-    CreateDecryptedFile(plainBytes)
+    CreateEncryptedFile(cipherBytes, originalFile)
+    CreateDecryptedFile(plainBytes, originalFile)
