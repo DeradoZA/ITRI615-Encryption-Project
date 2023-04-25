@@ -1,11 +1,28 @@
+def fileToBytes(file):
+    readFile = open(file, 'rb')
+    file_bytes = readFile.read()
+    readFile.close()
+
+    return file_bytes
+
+
+'''
+def bytesToFile(file):
+    writeFile = open(file, 'wb')
+    encryptedFile =  writeFile.write('')
+    return encryptedFile
+'''
+
+
 def vigenere(
-        plaintext,
-        key,
-        letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 ',
-        encrypt = True
-    ):
+    plaintext,
+    key,
+    letters='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`~!@#$%^&*()-_=+/*[]{}\\|;:\'\",./<>? ',
+    encrypt=True
+):
 
     ciphertext = ''
+    plaintext_value = 0
 
     for i in range(len(plaintext)):
         letter_index = letters.index(plaintext[i])
@@ -13,7 +30,7 @@ def vigenere(
 
         if encrypt:
             plaintext_value = (letter_index + key_index) % len(letters)
-        
+
         if not encrypt:
             plaintext_value = (letter_index - key_index) % len(letters)
 
@@ -21,20 +38,39 @@ def vigenere(
 
     return ciphertext
 
+
 def vig_encrypt(plaintext, key):
-    return vigenere(plaintext=plaintext, key=key, encrypt = True)
+    return vigenere(plaintext=plaintext,
+                    key=key,
+                    encrypt=True)
+
 
 def vig_decrypt(plaintext, key):
-    return vigenere(plaintext=plaintext, key=key, encrypt = False)
+    return vigenere(plaintext=plaintext,
+                    key=key,
+                    encrypt=False)
+
 
 def main():
-    plaintext = str(input('Enter any plaintext: '))
-    key =  str(input('Enter a key for the plaintext: '))
+    choice = 0
+    plaintext = ''
+    key = ''
+
+    choice = int(input('Would you like to encrypt a file (1) or text (2)?: '))
+    if choice == 1:
+        file = input('Enter name of file to encrypt: ')
+        plaintext = str(fileToBytes(file))
+        key = input('Enter a key for the plaintext: ')
+
+    if choice == 2:
+        plaintext = input('Enter plaintext: ')
+        key = input('Enter a key for the plaintext: ')
 
     ciphertext = vig_encrypt(plaintext, key)
-    
-    print(ciphertext)
-    print(vig_decrypt(ciphertext, key))
 
-main()
-    
+    print('\nEncryption:\n', ciphertext)
+    print('\nDecryption:\n', vig_decrypt(ciphertext, key))
+
+
+if __name__ == '__main__':
+    main()
