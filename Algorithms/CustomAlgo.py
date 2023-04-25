@@ -12,22 +12,32 @@ def CustomEncrypt(fileName):
     encryptedBytes = b""
 
     for byte in plainFileBytes:
-        vernamRandom = random.randint(0, 255)
-        customDecKey.append(vernamRandom)
+        randomKeyDec = random.randint(0, 255)
+        customDecKey.append(randomKeyDec)
 
-        encryptedDecimalValue = (byte ** vernamRandom) % 256
+        encryptedDecimalValue = (byte ** randomKeyDec) % 256
         encryptedByteValue = encryptedDecimalValue.to_bytes(1, byteorder='big')
 
         encryptedBytes += encryptedByteValue
 
+    file.close()
     return encryptedBytes, customDecKey
 
 
 def CustomDecrypt(encryptedBytes, customKey):
     decryptedBytes = b""
+    customKeyPointer = 0
 
     for byte in encryptedBytes:
-        pass
+        byteDecValue = int.from_bytes(byte, byteorder='big')
+        for plainDec in range(256):
+            if (plainDec ** customKey[customKeyPointer] % 256) == byte:
+                decryptedBytes += plainDec.to_bytes(1, byteorder='big')
+                break
+
+        customKeyPointer += 1
+
+    return decryptedBytes
 
 
 def CreateEncryptedFile(cipherBytes, originalFile):
@@ -56,6 +66,8 @@ if __name__ == "__main__":
 
     encryptedBytes, customKey = CustomEncrypt(originalFile)
 
-    print(encryptedBytes)
-
     CreateEncryptedFile(encryptedBytes, originalFile)
+
+    decryptedBytes = CustomDecrypt(encryptedBytes, customKey)
+
+    CreateDecryptedFile(decryptedBytes, originalFile)
