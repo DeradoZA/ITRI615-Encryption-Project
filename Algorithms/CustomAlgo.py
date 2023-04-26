@@ -22,8 +22,7 @@ def CustomEncrypt(fileName):
         rawEncryptedDecs.append(encryptedRawDecimalValue)
 
         encryptedBytes += encryptedByteValue
-
-    file.close()
+    
     return encryptedBytes, rawEncryptedDecs, customDecKey
 
 
