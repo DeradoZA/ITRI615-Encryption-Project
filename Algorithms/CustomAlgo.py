@@ -9,33 +9,30 @@ def CustomEncrypt(fileName):
     plainFileBytes = file.read()
 
     customDecKey = []
+    rawEncryptedDecs = []
     encryptedBytes = b""
 
     for byte in plainFileBytes:
-        randomKeyDec = random.randint(0, 255)
+        randomKeyDec = random.randint(1, 256)
         customDecKey.append(randomKeyDec)
 
-        encryptedDecimalValue = (byte ** randomKeyDec) % 256
+        encryptedRawDecimalValue = byte * randomKeyDec
+        encryptedDecimalValue = encryptedRawDecimalValue % 256
         encryptedByteValue = encryptedDecimalValue.to_bytes(1, byteorder='big')
+        rawEncryptedDecs.append(encryptedRawDecimalValue)
 
         encryptedBytes += encryptedByteValue
 
     file.close()
-    return encryptedBytes, customDecKey
+    return encryptedBytes, rawEncryptedDecs, customDecKey
 
 
-def CustomDecrypt(encryptedBytes, customKey):
+def CustomDecrypt(encryptedRawDecimals, customKey):
     decryptedBytes = b""
-    customKeyPointer = 0
 
-    for byte in encryptedBytes:
-        byteDecValue = int.from_bytes(byte, byteorder='big')
-        for plainDec in range(256):
-            if (plainDec ** customKey[customKeyPointer] % 256) == byte:
-                decryptedBytes += plainDec.to_bytes(1, byteorder='big')
-                break
-
-        customKeyPointer += 1
+    for index in range(0, len(encryptedRawDecimals)):
+        decryptedByteDec = int(encryptedRawDecimals[index] / customKey[index])
+        decryptedBytes += decryptedByteDec.to_bytes(1, byteorder='big')
 
     return decryptedBytes
 
@@ -64,10 +61,10 @@ if __name__ == "__main__":
 
     originalFile = input("File name or path that you would like to encrypt: ")
 
-    encryptedBytes, customKey = CustomEncrypt(originalFile)
+    encryptedBytes, rawEncryptedValues, customKey = CustomEncrypt(originalFile)
 
     CreateEncryptedFile(encryptedBytes, originalFile)
 
-    decryptedBytes = CustomDecrypt(encryptedBytes, customKey)
+    decryptedBytes = CustomDecrypt(rawEncryptedValues, customKey)
 
     CreateDecryptedFile(decryptedBytes, originalFile)
