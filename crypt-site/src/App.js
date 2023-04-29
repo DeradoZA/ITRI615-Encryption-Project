@@ -1,14 +1,16 @@
-import Navbar from './Navbar';
-import Home from './Home';
+import Navbar from "./Navbar";
+import Form from "./Form";
+import Output from "./Output";
+import Header from "./Header";
 
 function App() {
 
   return (
-    <div className="App">
+    <div className="app">
+      <Header />
       <Navbar />
-      <div className="content">
-        <Home />
-      </div>
+      <Form />
+      <Output />
     </div>
   );
 }
