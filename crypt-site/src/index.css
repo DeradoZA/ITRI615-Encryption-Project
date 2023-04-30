@@ -44,6 +44,8 @@
 .file-form{
   max-width: 600px;
   margin: 0 auto;
+  padding : 20px;
+  border-bottom: 2px solid black;
 }
 .file-form label{
   text-align: center;
@@ -66,7 +68,45 @@
   cursor: pointer;
 }
 
+.text-form{
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border-bottom: 2px solid black;
+}
+.text-form label{
+  text-align: center;
+}
+
+.text-form input, .text-form label{
+  padding: 6px 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+  display: block;
+}
+
+
+.text-form button{
+  background: #f1356d;
+  color: #fff;
+  border: 0;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
 .output{
-  margin: 10px;
+  max-width: 600px;
+  margin : 0 auto;
+  text-align: center;
+}
+
+.output label, textarea{
+  padding: 6px 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+  display: block;
 }
 

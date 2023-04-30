@@ -1,7 +1,15 @@
-function Form(){
+function FileForm(){
     return(
         <div className="file-form">
             <form>
+                <label for="EncMethod">Encryption Method</label>
+                <select id="EncMethod">
+                    <option value ="Transposition">Transposition</option>
+                    <option value="Vernam">Vernam</option>
+                    <option value="Vigenere">Vigenere</option>
+                    <option value="Custom">Custom</option>
+                </select>
+                <br/><br/>
                 <label for="key">Encryption key:</label>
                 <input type="text" id="key"/>
                 <br/><br/>
@@ -15,4 +23,4 @@ function Form(){
     );
 }
 
-export default Form;
+export default FileForm;
