@@ -13,6 +13,9 @@ function App() {
         <Header />
         <Navbar />
         <Switch>
+          <Route exact path='/'>
+            <TextForm />
+          </Route>
           <Route path="/text">
             <TextForm />
           </Route>
