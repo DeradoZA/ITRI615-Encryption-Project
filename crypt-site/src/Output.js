@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 
-function Output(){
+function Output(props){
     const location = useLocation();
     const currentPath = location.pathname;
 
@@ -9,7 +9,7 @@ function Output(){
         return(
             <div className="output">
                 <label for="Output">Result</label>
-                <textarea id="Output" rows='4' columns='100'></textarea>
+                <textarea id="Output" rows='4' columns='100' value = {props.text}></textarea>
             </div>
         );
     }

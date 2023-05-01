@@ -1,6 +1,5 @@
 import Navbar from "./Navbar";
 import FileForm from "./FileForm";
-import Output from "./Output";
 import Header from "./Header";
 import TextForm from "./TextForm";
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
@@ -23,7 +22,6 @@ function App() {
             <FileForm />
           </Route>
         </Switch>
-        <Output />
       </div>
     </Router>
   );
