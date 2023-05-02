@@ -1,6 +1,7 @@
 import random
 import os
 
+
 def VernamEncrypt(fileName):
 
     file = open(fileName, "rb")
@@ -38,7 +39,7 @@ def VernamDecrypt(cipherText, vernamKey):
 
 
 def CreateEncryptedFile(cipherBytes, originalFile):
-    
+
     fileInfo = os.path.splitext(originalFile)
     encryptedFileName = "Encrypted" + fileInfo[1]
     encryptedFile = open(encryptedFileName, "wb")
@@ -48,7 +49,7 @@ def CreateEncryptedFile(cipherBytes, originalFile):
 
 
 def CreateDecryptedFile(plainBytes, originalFile):
-    
+
     fileInfo = os.path.splitext(originalFile)
     decryptedFileName = "Decrypted" + fileInfo[1]
     decryptedFile = open(decryptedFileName, "wb")
