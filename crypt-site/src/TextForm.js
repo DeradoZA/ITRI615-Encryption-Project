@@ -30,10 +30,10 @@ function TextForm(){
                 <label for="EncKey">Encryption Key</label>
                 <input type="text" id = "EncKey" value = {encKey} onChange={(e) => setEncKey(e.target.value)}></input>
                 <br/><br/>
-                <label for="text-input">Plain text</label>
+                <label for="text-input">Text</label>
                 <textarea
                  id="text-input" rows='4' columns='100' value = {text} onChange={(e) => setText(e.target.value)}>
-                    Enter your plaintext here</textarea>
+                </textarea>
                 <br/>
                 <button style={{position : 'relative', left:'225px'}}>Encrypt</button>
                 <button style={{position : 'relative', left:'275px'}}>Decrypt</button>
