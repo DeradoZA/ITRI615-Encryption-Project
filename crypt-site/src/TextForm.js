@@ -1,11 +1,12 @@
 import { useState } from "react";
+import { useEffect } from "react";
 import Output from "./Output"
 
 function TextForm(){
     const [encMethod, setEncMethod] = useState('Transposition');
     const [encKey, setEncKey] = useState('');
     const [text, setText] = useState('');
-    const cipherResult = '';
+    const [cipherText, setCipherText] = useState('');
 
     function handleSubmit(e){
         e.preventDefault();
@@ -15,8 +16,14 @@ function TextForm(){
         fetch("http://127.0.0.1:5000/TextEncrypt/" + text + "/" + encKey + "/" + encMethod)
         .then(res => {
             return res.json();
-        }).then(data => {cipherResult = data.ciphertext});
+        }).then(data => {setCipherText(data.ciphertext)});
     }
+
+    useEffect(() => {
+        if (encMethod === "Vernam" || encMethod === "Custom"){
+            setEncKey("None");
+        }
+    }, [encMethod])
 
     return(
         <div>
@@ -43,7 +50,7 @@ function TextForm(){
 
             </form>
         </div>
-        <Output encMethod = {encMethod} encKey = {encKey} text = {cipherResult}/>
+        <Output encMethod = {encMethod} encKey = {encKey} text = {cipherText}/>
         </div>
     );
 }
