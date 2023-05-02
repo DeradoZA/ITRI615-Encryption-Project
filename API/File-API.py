@@ -1,6 +1,11 @@
-from flask import Flask
-from flask_restful import Api, Resource
+import os
+import sys
 from flask_cors import CORS
+from flask_restful import Api, Resource
+from flask import Flask
+
+sys.path.append(os.path.join(os.path.dirname(__file__), '../Algorithms'))
+from VernamMethods import VernamMethods as vm
 
 app = Flask(__name__)
 api = Api(app)
@@ -10,7 +15,11 @@ CORS(app)
 
 class TextEncrypt(Resource):
     def get(self, text, encKey, encMethod):
-        return {"Text": text, "Encryption Key": encKey, "Encryption Method": encMethod}
+        vernamEncryptor = vm(text)
+
+        cipherText, vernamKey = vernamEncryptor.textEncrypt(text)
+
+        return {"plaintext": text, "ciphertext": cipherText}
 
 
 api.add_resource(

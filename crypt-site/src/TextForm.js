@@ -5,6 +5,7 @@ function TextForm(){
     const [encMethod, setEncMethod] = useState('Transposition');
     const [encKey, setEncKey] = useState('');
     const [text, setText] = useState('');
+    const cipherResult = '';
 
     function handleSubmit(e){
         e.preventDefault();
@@ -14,7 +15,7 @@ function TextForm(){
         fetch("http://127.0.0.1:5000/TextEncrypt/" + text + "/" + encKey + "/" + encMethod)
         .then(res => {
             return res.json();
-        }).then(data => {console.log(data)});
+        }).then(data => {cipherResult = data.ciphertext});
     }
 
     return(
@@ -42,7 +43,7 @@ function TextForm(){
 
             </form>
         </div>
-        <Output encMethod = {encMethod} encKey = {encKey} text = {text}/>
+        <Output encMethod = {encMethod} encKey = {encKey} text = {cipherResult}/>
         </div>
     );
 }
