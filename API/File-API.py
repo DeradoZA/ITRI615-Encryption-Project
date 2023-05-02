@@ -7,12 +7,14 @@ api = Api(app)
 
 CORS(app)
 
+
 class TextEncrypt(Resource):
-    def get(self, text):
-        return {"Output": text}
-        
-        
-api.add_resource(TextEncrypt, "/TextEncrypt/<string:text>")    
+    def get(self, text, encKey, encMethod):
+        return {"Text": text, "Encryption Key": encKey, "Encryption Method": encMethod}
+
+
+api.add_resource(
+    TextEncrypt, "/TextEncrypt/<string:text>/<string:encKey>/<string:encMethod>")
 
 if __name__ == "__main__":
     app.run(debug=True)

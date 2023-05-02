@@ -8,11 +8,13 @@ function TextForm(){
 
     function handleSubmit(e){
         e.preventDefault();
+    }
 
-        fetch("http://127.0.0.1:5000/TextEncrypt/" + text)
+    function handleEncryptClick(){
+        fetch("http://127.0.0.1:5000/TextEncrypt/" + text + "/" + encKey + "/" + encMethod)
         .then(res => {
             return res.json();
-        }).then(data => setText(data.Output));
+        }).then(data => {console.log(data)});
     }
 
     return(
@@ -35,7 +37,7 @@ function TextForm(){
                  id="text-input" rows='4' columns='100' value = {text} onChange={(e) => setText(e.target.value)}>
                 </textarea>
                 <br/>
-                <button style={{position : 'relative', left:'225px'}}>Encrypt</button>
+                <button style={{position : 'relative', left:'225px'}} onClick={handleEncryptClick}>Encrypt</button>
                 <button style={{position : 'relative', left:'275px'}}>Decrypt</button>
 
             </form>
