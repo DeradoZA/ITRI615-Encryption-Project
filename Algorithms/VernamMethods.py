@@ -18,8 +18,8 @@ class VernamMethods:
             vernamKeyBytes = vernamKeyBytes + bytes(keyByte)
             cipherBytes = cipherBytes + bytes([byte ^ keyByte])
 
-        cipherText = cipherBytes.decode('latin1')
-        vernamKey = vernamKeyBytes.decode('latin1')
+        cipherText = cipherBytes.decode('ascii')
+        vernamKey = vernamKeyBytes.decode('ascii')
 
         return cipherText, vernamKey
 
