@@ -7,6 +7,7 @@ from flask import Flask
 sys.path.append(os.path.join(os.path.dirname(__file__), '../Algorithms'))
 from VernamMethods import VernamMethods as vm
 from TranspositionMethods import TranspositionMethods as tm
+from CustomAlgoMethods import CustomAlgoMethods as cam
 
 app = Flask(__name__)
 api = Api(app)
@@ -29,6 +30,12 @@ class TextEncrypt(Resource):
             
             cipherText, textMatrix, paddingValue = TranspositionEncryptor.TextEncrypt(text, encKeyValue)
             
+            return {"plaintext" : text, "ciphertext" : cipherText}
+        
+        elif(encMethod == "Custom"):
+            CustomEncryptor = cam(text)
+            cipherText, encryptedBytes, rawEncryptedDecs, customDecKey = cam.TextEncrypt(text)
+
             return {"plaintext" : text, "ciphertext" : cipherText}
 
 
