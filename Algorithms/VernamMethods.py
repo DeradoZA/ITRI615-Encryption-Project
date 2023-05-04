@@ -15,7 +15,7 @@ class VernamMethods:
         for byte in textToBytes:
             keyByte = random.randint(0, 128)
 
-            vernamKeyBytes = vernamKeyBytes + bytes(keyByte)
+            vernamKeyBytes = vernamKeyBytes + keyByte.to_bytes(1, byteorder='big')
             cipherBytes = cipherBytes + bytes([byte ^ keyByte])
 
         cipherText = cipherBytes.decode('ascii')

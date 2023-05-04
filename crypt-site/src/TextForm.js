@@ -7,6 +7,7 @@ function TextForm(){
     const [encKey, setEncKey] = useState('');
     const [text, setText] = useState('');
     const [cipherText, setCipherText] = useState('');
+    const [vernamKey, setVernamKey] = useState('');
 
     function handleSubmit(e){
         e.preventDefault();
@@ -16,7 +17,20 @@ function TextForm(){
         fetch("http://127.0.0.1:5000/TextEncrypt/" + text + "/" + encKey + "/" + encMethod)
         .then(res => {
             return res.json();
-        }).then(data => {setCipherText(data.ciphertext)});
+        }).then(data => {
+            setCipherText(data.ciphertext);
+            setVernamKey(data.Vernam)});
+    }
+
+    function handleDecryptClick(){
+        if (encMethod === "Vernam"){
+            fetch("http://127.0.0.1:5000/TextDecrypt/" + cipherText + "/" + vernamKey + "/" + encMethod)
+            .then(res => {
+                return res.json();
+            }).then(data => {
+                console.log(data);
+            });
+        }
     }
 
     useEffect(() => {
@@ -46,7 +60,7 @@ function TextForm(){
                 </textarea>
                 <br/>
                 <button style={{position : 'relative', left:'225px'}} onClick={handleEncryptClick}>Encrypt</button>
-                <button style={{position : 'relative', left:'275px'}}>Decrypt</button>
+                <button style={{position : 'relative', left:'275px'}} onClick={handleDecryptClick}>Decrypt</button>
 
             </form>
         </div>
