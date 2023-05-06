@@ -1,11 +1,13 @@
 from VernamMethods import VernamMethods as vm
 
-VernamAlgo = vm("Hello World")
+text = "Hello World"
 
-cipherText, vernamKey = VernamAlgo.textEncrypt(VernamAlgo.text)
+VernamAlgo = vm(text)
 
-print(cipherText + '\n' + vernamKey)
+cipherText, vernamKey = VernamAlgo.textEncrypt(text)
+
+print("cipher text: " + cipherText + '\n' + "vernam key: " + vernamKey)
 
 plainText = VernamAlgo.textDecrypt(cipherText, vernamKey)
 
-print(plainText)
+print("plain text: " + plainText)

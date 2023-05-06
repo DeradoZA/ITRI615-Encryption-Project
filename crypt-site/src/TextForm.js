@@ -8,6 +8,7 @@ function TextForm(){
     const [text, setText] = useState('');
     const [cipherText, setCipherText] = useState('');
     const [vernamKey, setVernamKey] = useState('');
+    const encoder = new TextEncoder();
 
     function handleSubmit(e){
         e.preventDefault();
@@ -19,12 +20,16 @@ function TextForm(){
             return res.json();
         }).then(data => {
             setCipherText(data.ciphertext);
-            setVernamKey(data.Vernam)});
+            setVernamKey(data.Vernam);
+            console.log(data)});
     }
 
     function handleDecryptClick(){
+        const encodedCipherText = encodeURIComponent(cipherText);
+        const encodedVernamKey = encodeURIComponent(vernamKey);
+
         if (encMethod === "Vernam"){
-            fetch("http://127.0.0.1:5000/TextDecrypt/" + cipherText + "/" + vernamKey + "/" + encMethod)
+            fetch("http://127.0.0.1:5000/TextDecrypt/" + encodedCipherText + "/" + encodedVernamKey + "/" + encMethod)
             .then(res => {
                 return res.json();
             }).then(data => {

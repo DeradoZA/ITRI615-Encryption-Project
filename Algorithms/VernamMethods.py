@@ -8,36 +8,25 @@ class VernamMethods:
         self.file = file
 
     def textEncrypt(self, text):
-        textToBytes = text.encode('ascii')
-        cipherBytes = b""
-        vernamKeyBytes = b""
+        cipherText = ""
+        vernamKey = ""
 
-        for byte in textToBytes:
-            keyByte = random.randint(0, 128)
+        for letter in text:
+            keyValue = random.randint(0, 255)
 
-            vernamKeyBytes = vernamKeyBytes + keyByte.to_bytes(1, byteorder='big')
-            cipherBytes = cipherBytes + bytes([byte ^ keyByte])
-
-        cipherText = cipherBytes.decode('ascii')
-        vernamKey = vernamKeyBytes.decode('ascii')
+            vernamKey = vernamKey + chr(keyValue)
+            cipherText = cipherText + chr(ord(letter) ^ keyValue)
 
         return cipherText, vernamKey
 
     def textDecrypt(self, text, vernamKey):
-        textToBytes = text.encode('ascii')
-        vernamKeyBytes = vernamKey.encode('ascii')
-        cipherTextLength = len(textToBytes)
-        decryptedBytes = b""
+        decodedText = ""
 
-        for index in range(cipherTextLength):
-            textByte = textToBytes[index]
-            vernamKeyByte = vernamKeyBytes[index]
+        for textLetter, vernamLetter in zip(text, vernamKey):
 
-            decryptedByte = textByte ^ vernamKeyByte
+            decryptedLetter = ord(textLetter) ^ ord(vernamLetter)
+            decodedText = decodedText + chr(decryptedLetter)
 
-            decryptedBytes = decryptedBytes + bytes([decryptedByte])
-
-        decodedText = decryptedBytes.decode('ascii')
         return decodedText
 
     def fileEncrypt(self, fileBytes):
