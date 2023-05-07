@@ -1,25 +1,13 @@
+import os
+
 class Vigenere:
-    def fileToBytes(file):
-        readFile = open(file, 'rb')
-        file_bytes = readFile.read()
-        readFile.close()
-
-        return file_bytes
-
-    '''
-    def bytesToFile(file):
-        writeFile = open(file, 'wb')
-        encryptedFile =  writeFile.write('')
-        return encryptedFile
-    '''
-
     def vigenere(
         plaintext,
         key,
-        letters='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`~!@#$%^&*()-_=+/*[]{}\\|;:\'\",./<>? ',
         encrypt=True
     ):
 
+        letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`~!@#$%^&*()-_=+/*[]{}\\|;:\'\",./<>? '
         ciphertext = ''
         plaintext_value = 0
 
@@ -37,38 +25,32 @@ class Vigenere:
 
         return ciphertext
 
-    def encrypt(plaintext, key):
-        return Vigenere.vigenere(plaintext=plaintext,
-                        key=key,
-                        encrypt=True)
+    def textEncrypt(plaintext, key):
+        return Vigenere.vigenere(plaintext, key, True)
 
-    def decrypt(plaintext, key):
-        return Vigenere.vigenere(plaintext=plaintext,
-                        key=key,
-                        encrypt=False)
+    def textDecrypt(plaintext, key):
+        return Vigenere.vigenere(plaintext, key, False)
 
-
-def main():
-    choice = 0
-    plaintext = ''
-    key = ''
-    choice = int(input('Would you like to encrypt a file (1) or text (2)?: '))
-    vig = Vigenere()
+    def fileToBytes(file):
+        readFile = open(file, 'rb')
+        file_bytes = readFile.read()
+        readFile.close()
     
-    if choice == 1:
-        file = input('Enter name of file to encrypt: ')
-        plaintext = str(vig.fileToBytes(file))
-        key = input('Enter a key for the plaintext: ')
+        return file_bytes
 
-    if choice == 2:
-        plaintext = input('Enter plaintext: ')
-        key = input('Enter a key for the plaintext: ')
+    def fileEncrypt(plaintext, key):
+        ciphertext = Vigenere.vigenere(plaintext, key, True)
+        return ciphertext
 
-    ciphertext = vig.encrypt(plaintext, key)
+    def fileDecrypt(ciphertext, key):
+        return Vigenere.vigenere(ciphertext, key, False)
+    
+    def createEncryptedFile(ciphertext, file):
+        fileInfo = os.path.splitext(file)
+        encryptedFileName = "Encrypted" + fileInfo[1]
+        encryptedFile = open(encryptedFileName, "wb")
+        encryptedFile.write(bytes(ciphertext, 'utf-8'))
 
-    print('\nEncryption:\n', ciphertext)
-    print('\nDecryption:\n', vig.decrypt(ciphertext, key))
+        encryptedFile.close()
 
-
-if __name__ == '__main__':
-    main()
+        
