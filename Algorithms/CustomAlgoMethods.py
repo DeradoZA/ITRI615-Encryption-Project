@@ -6,7 +6,7 @@ class CustomAlgoMethods:
         self.text = text
         self.file = file
 
-    def TextEncrypt(text):
+    def TextEncrypt(self, text):
         customDecKey = []
         rawEncryptedDecs = []
         encryptedBytes = b""
@@ -27,7 +27,7 @@ class CustomAlgoMethods:
 
         return cipherText, encryptedBytes, rawEncryptedDecs, customDecKey
 
-    def TextDecrypt(encryptedRawDecs, customDecKey):
+    def TextDecrypt(self, encryptedRawDecs, customDecKey):
         decryptedBytes = b""
 
         for index in range(0, len(encryptedRawDecs)):
@@ -38,14 +38,14 @@ class CustomAlgoMethods:
 
         return plainText
 
-    def FileEncrypt():
+    def FileEncrypt(self):
         pass
 
-    def FileDecrypt():
+    def FileDecrypt(self):
         pass
 
-    def CreateEncryptedFile():
+    def CreateEncryptedFile(self):
         pass
 
-    def CreateDecryptedFile():
+    def CreateDecryptedFile(self):
         pass

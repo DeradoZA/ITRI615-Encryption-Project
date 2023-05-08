@@ -34,9 +34,9 @@ class TextEncrypt(Resource):
         
         elif(encMethod == "Custom"):
             CustomEncryptor = cam(text)
-            cipherText, encryptedBytes, rawEncryptedDecs, customDecKey = cam.TextEncrypt(text)
+            cipherText, encryptedBytes, rawEncryptedDecs, customDecKey = CustomEncryptor.TextEncrypt(text)
 
-            return {"plaintext" : text, "ciphertext" : cipherText}  
+            return {"plaintext" : text, "ciphertext" : cipherText, "rawEncryptedDecs" : rawEncryptedDecs, "CustomDecKey" : customDecKey}  
         
 class TextDecrypt(Resource):
     def get(self, cipherText, encKey, encMethod):
@@ -53,12 +53,25 @@ class TextDecrypt(Resource):
             plainText = TranspositionDecryptor.TextDecrypt(cipherText, encKeyValue)
             
             return {"ciphertext" : cipherText, "plaintext" : plainText}
-
+        
+            
+class TextCustomDecrypt(Resource):
+    def get(self, cipherText, encKey, rawEncDecs):
+        
+        encKeyValues = encKey.split(",")
+        rawEncDecValues = rawEncDecs.split(",")
+        encKeyValues = [int(i) for i in encKeyValues]
+        rawEncDecValues = [int(i) for i in rawEncDecValues]
+        CustomDecryptor = cam(cipherText)
+        plainText = CustomDecryptor.TextDecrypt(rawEncDecValues, encKeyValues)
+        
+        return {"ciphertext" : cipherText, "plaintext" : plainText}
 
 api.add_resource(
     TextEncrypt, "/TextEncrypt/<string:text>/<string:encKey>/<string:encMethod>")
 
 api.add_resource(TextDecrypt, "/TextDecrypt/<string:cipherText>/<string:encKey>/<string:encMethod>")
+api.add_resource(TextCustomDecrypt, "/TextCustomDecrypt/<string:cipherText>/<string:encKey>/<string:rawEncDecs>")
 
 if __name__ == "__main__":
     app.run(debug=True)

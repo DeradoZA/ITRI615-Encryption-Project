@@ -11,6 +11,8 @@ function TextForm(){
     const [text, setText] = useState('');
     const [resultText, setResultText] = useState('');
     const [vernamKey, setVernamKey] = useState('');
+    const [rawEncDecs, setRawEncDecs] = useState('');
+    const [customDecKey, setCustomDecKey] = useState('');
 
     function handleSubmit(e){
         e.preventDefault();
@@ -23,7 +25,9 @@ function TextForm(){
         }).then(data => {
             console.log(data)
             setResultText(data.ciphertext);
-            setVernamKey(data.Vernam);});
+            setVernamKey(data.Vernam);
+            setRawEncDecs(data.rawEncryptedDecs);
+            setCustomDecKey(data.CustomDecKey)});
     }
 
     function handleDecryptClick(){
@@ -37,6 +41,14 @@ function TextForm(){
             });
         } else if (encMethod === "Transposition"){
             fetch(`http://127.0.0.1:5000/TextDecrypt/${encodeURIComponent(resultText)}/${encodeURIComponent(encKey)}/${encodeURIComponent(encMethod)}`)
+            .then(res => {
+                return res.json();
+            }).then(data => {
+                console.log(data);
+                setResultText(data.plaintext);
+            });
+        } else if (encMethod === "Custom"){
+            fetch(`http://127.0.0.1:5000/TextCustomDecrypt/${encodeURIComponent(resultText)}/${encodeURIComponent(customDecKey)}/${encodeURIComponent(rawEncDecs)}`)
             .then(res => {
                 return res.json();
             }).then(data => {

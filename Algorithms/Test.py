@@ -1,16 +1,14 @@
-from TranspositionMethods import TranspositionMethods as tm
+from CustomAlgoMethods import CustomAlgoMethods as cam
 
 text = input("text: ")
-rowLength = int(input("row length: "))
 
-transDec = tm(text)
+customDec = cam(text)
 
-cipherText, textMatrix = transDec.TextEncrypt(text, rowLength)
+cipherText, encryptedBytes, rawEncryptedDecs, customDecKey = customDec.TextEncrypt(text)
+
+plainText = customDec.TextDecrypt(rawEncryptedDecs, customDecKey)
 
 print(cipherText)
-print(textMatrix)
 print("Decrypting")
-
-plainText = transDec.TextDecrypt(cipherText, rowLength)
 
 print(plainText)
