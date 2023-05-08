@@ -5,7 +5,7 @@ function Output(props){
     const currentPath = location.pathname;
 
     console.log(currentPath);
-    if (currentPath === "/text"){
+    if (currentPath === "/text" || currentPath === "/"){
         return(
             <div className="output">
                 <label for="Output">Result</label>
