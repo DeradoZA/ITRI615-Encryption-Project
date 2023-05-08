@@ -26,9 +26,9 @@ class TextEncrypt(Resource):
             return {"plaintext": text, "ciphertext": cipherText, "Vernam" : vernamKey}
         elif (encMethod == "Transposition"):
             encKeyValue = int(encKey)
-            TranspositionEncryptor = tm(encKeyValue,text)
+            TranspositionEncryptor = tm(text)
             
-            cipherText, textMatrix, paddingValue = TranspositionEncryptor.TextEncrypt(text, encKeyValue)
+            cipherText = TranspositionEncryptor.TextEncrypt(text, encKeyValue)
             
             return {"plaintext" : text, "ciphertext" : cipherText}
         
@@ -45,6 +45,13 @@ class TextDecrypt(Resource):
 
             plainText = vernamDecryptor.textDecrypt(cipherText, encKey)
 
+            return {"ciphertext" : cipherText, "plaintext" : plainText}
+        
+        if (encMethod == "Transposition"):
+            encKeyValue = int(encKey)
+            TranspositionDecryptor = tm(cipherText)
+            plainText = TranspositionDecryptor.TextDecrypt(cipherText, encKeyValue)
+            
             return {"ciphertext" : cipherText, "plaintext" : plainText}
 
 

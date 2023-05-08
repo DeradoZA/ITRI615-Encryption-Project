@@ -35,6 +35,14 @@ function TextForm(){
                 console.log(data);
                 setResultText(data.plaintext);
             });
+        } else if (encMethod === "Transposition"){
+            fetch(`http://127.0.0.1:5000/TextDecrypt/${encodeURIComponent(resultText)}/${encodeURIComponent(encKey)}/${encodeURIComponent(encMethod)}`)
+            .then(res => {
+                return res.json();
+            }).then(data => {
+                console.log(data);
+                setResultText(data.plaintext);
+            });
         }
     }
 

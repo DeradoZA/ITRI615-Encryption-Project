@@ -1,8 +1,7 @@
 import os
 
 class TranspositionMethods:
-    def __init__(self, rowLength, text = None, file = None):
-        self.rowLength = rowLength
+    def __init__(self, text = None, file = None):
         self.file = file
         self.text = text
         
@@ -13,39 +12,48 @@ class TranspositionMethods:
         cipherText = ""
 
         for character in text:
+            Row.append(character)
             if len(Row) == rowLength:
                 textMatrix.append(Row)
                 Row = []
-
-            Row.append(character)
-
-        if Row:
-            if len(Row) < rowLength:
-                paddingValue = rowLength - len(Row)
-                for filler in range(paddingValue):
-                    Row.append(" ")
-
-                textMatrix.append(Row)
-
+                
+        if len(Row) == rowLength:
+            textMatrix.append(Row)
+        elif len(Row) == 0:
+            pass
+        else:
+            paddingValue = rowLength - len(Row)
+            for _ in range(paddingValue):
+                Row.append(" ")
+            textMatrix.append(Row)
+            
         for index in range(rowLength):
             for row in textMatrix:
                 cipherText += row[index]
-
-        return cipherText, textMatrix, paddingValue
-    
-    def TextDecrypt(self, textMatrix, paddingValue):
+                
+        return cipherText
+            
+            
+    def TextDecrypt(self, cipherText, rowLength):
+        textMatrix = []
+        Row = []
         plainText = ""
 
-        letterMatrixFinalRow = len(textMatrix)
+        for character in cipherText:
+            Row.append(character)
+            if len(Row) == len(cipherText) // rowLength + (1 if len(cipherText) % rowLength > 0 else 0):
+                textMatrix.append(Row)
+                Row = []
 
-        for _ in range(paddingValue):
-            textMatrix[-1].pop()
+        for index in range(len(textMatrix[0])):
+            for row in textMatrix:
+                if index < len(row):
+                    plainText += row[index]
 
-        for row in textMatrix:
-            for character in row:
-                plainBytes = plainBytes + character
-
-        return plainBytes
+        return plainText
+        
+        
+        
     
     def FileEncrypt(self):
         pass
