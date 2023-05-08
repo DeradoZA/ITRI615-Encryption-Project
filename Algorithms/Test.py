@@ -1,12 +1,11 @@
-from CustomAlgoMethods import CustomAlgoMethods as cam
+from Vigenere import Vigenere as vig
 
 text = input("text: ")
+key = input("key: ")
 
-customDec = cam(text)
+cipherText = vig.textEncrypt(text, key)
 
-cipherText, encryptedBytes, rawEncryptedDecs, customDecKey = customDec.TextEncrypt(text)
-
-plainText = customDec.TextDecrypt(rawEncryptedDecs, customDecKey)
+plainText = vig.textDecrypt(text, key)
 
 print(cipherText)
 print("Decrypting")

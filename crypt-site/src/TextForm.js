@@ -32,7 +32,7 @@ function TextForm(){
 
     function handleDecryptClick(){
         if (encMethod === "Vernam"){
-            fetch(`http://127.0.0.1:5000/TextDecrypt/${encodeURIComponent(resultText)}/${encodeURIComponent(vernamKey)}/${encodeURIComponent(encMethod)}`)
+            fetch(`http://127.0.0.1:5000/TextDecrypt/${encodeURIComponent(text)}/${encodeURIComponent(vernamKey)}/${encodeURIComponent(encMethod)}`)
             .then(res => {
                 return res.json();
             }).then(data => {
@@ -40,7 +40,7 @@ function TextForm(){
                 setResultText(data.plaintext);
             });
         } else if (encMethod === "Transposition"){
-            fetch(`http://127.0.0.1:5000/TextDecrypt/${encodeURIComponent(resultText)}/${encodeURIComponent(encKey)}/${encodeURIComponent(encMethod)}`)
+            fetch(`http://127.0.0.1:5000/TextDecrypt/${encodeURIComponent(text)}/${encodeURIComponent(encKey)}/${encodeURIComponent(encMethod)}`)
             .then(res => {
                 return res.json();
             }).then(data => {
@@ -48,7 +48,15 @@ function TextForm(){
                 setResultText(data.plaintext);
             });
         } else if (encMethod === "Custom"){
-            fetch(`http://127.0.0.1:5000/TextCustomDecrypt/${encodeURIComponent(resultText)}/${encodeURIComponent(customDecKey)}/${encodeURIComponent(rawEncDecs)}`)
+            fetch(`http://127.0.0.1:5000/TextCustomDecrypt/${encodeURIComponent(text)}/${encodeURIComponent(customDecKey)}/${encodeURIComponent(rawEncDecs)}`)
+            .then(res => {
+                return res.json();
+            }).then(data => {
+                console.log(data);
+                setResultText(data.plaintext);
+            });
+        } else if (encMethod === "Vigenere"){
+            fetch(`http://127.0.0.1:5000/TextDecrypt/${encodeURIComponent(text)}/${encodeURIComponent(encKey)}/${encodeURIComponent(encMethod)}`)
             .then(res => {
                 return res.json();
             }).then(data => {
@@ -56,6 +64,7 @@ function TextForm(){
                 setResultText(data.plaintext);
             });
         }
+
     }
 
     useEffect(() => {

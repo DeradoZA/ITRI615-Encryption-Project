@@ -8,6 +8,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '../Algorithms'))
 from VernamMethods import VernamMethods as vm
 from TranspositionMethods import TranspositionMethods as tm
 from CustomAlgoMethods import CustomAlgoMethods as cam
+from Vigenere import Vigenere as vig
 
 app = Flask(__name__)
 api = Api(app)
@@ -38,6 +39,13 @@ class TextEncrypt(Resource):
 
             return {"plaintext" : text, "ciphertext" : cipherText, "rawEncryptedDecs" : rawEncryptedDecs, "CustomDecKey" : customDecKey}  
         
+        elif(encMethod == "Vigenere"):
+            VigenereEncryptor = vig()
+
+            cipherText = vig.textEncrypt(text, encKey)
+
+            return {"plaintext" : text, "ciphertext" : cipherText}
+        
 class TextDecrypt(Resource):
     def get(self, cipherText, encKey, encMethod):
         if (encMethod == "Vernam"):
@@ -46,12 +54,16 @@ class TextDecrypt(Resource):
             plainText = vernamDecryptor.textDecrypt(cipherText, encKey)
 
             return {"ciphertext" : cipherText, "plaintext" : plainText}
-        
-        if (encMethod == "Transposition"):
+        elif (encMethod == "Transposition"):
             encKeyValue = int(encKey)
             TranspositionDecryptor = tm(cipherText)
             plainText = TranspositionDecryptor.TextDecrypt(cipherText, encKeyValue)
             
+            return {"ciphertext" : cipherText, "plaintext" : plainText}
+        elif (encMethod == "Vigenere"):
+            VigenereDecryptor = vig()
+            plainText = vig.textDecrypt(cipherText, encKey)
+
             return {"ciphertext" : cipherText, "plaintext" : plainText}
         
             
