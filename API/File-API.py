@@ -65,10 +65,9 @@ class TextDecrypt(Resource):
             plainText = vig.textDecrypt(cipherText, encKey)
 
             return {"ciphertext" : cipherText, "plaintext" : plainText}
-        
             
 class TextCustomDecrypt(Resource):
-    def get(self, cipherText, encKey, rawEncDecs):
+    def post(self, cipherText, encKey, rawEncDecs):
         
         encKeyValues = encKey.split(",")
         rawEncDecValues = rawEncDecs.split(",")
@@ -78,12 +77,15 @@ class TextCustomDecrypt(Resource):
         plainText = CustomDecryptor.TextDecrypt(rawEncDecValues, encKeyValues)
         
         return {"ciphertext" : cipherText, "plaintext" : plainText}
+    
+class FileDecrypt(Resource):
+    def get(self, file, encKey, encMethod):
+        pass
 
-api.add_resource(
-    TextEncrypt, "/TextEncrypt/<string:text>/<string:encKey>/<string:encMethod>")
-
+api.add_resource(TextEncrypt, "/TextEncrypt/<string:text>/<string:encKey>/<string:encMethod>")
 api.add_resource(TextDecrypt, "/TextDecrypt/<string:cipherText>/<string:encKey>/<string:encMethod>")
 api.add_resource(TextCustomDecrypt, "/TextCustomDecrypt/<string:cipherText>/<string:encKey>/<string:rawEncDecs>")
+api.add_resource(FileDecrypt, "/EncryptedFileUpload")
 
 if __name__ == "__main__":
     app.run(debug=True)
