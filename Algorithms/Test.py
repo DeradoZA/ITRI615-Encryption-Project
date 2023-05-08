@@ -5,7 +5,7 @@ key = input("key: ")
 
 cipherText = vig.textEncrypt(text, key)
 
-plainText = vig.textDecrypt(text, key)
+plainText = vig.textDecrypt(cipherText, key)
 
 print(cipherText)
 print("Decrypting")
