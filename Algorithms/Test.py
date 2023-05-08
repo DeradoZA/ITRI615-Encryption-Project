@@ -1,11 +1,16 @@
-from VernamMethods import VernamMethods as vm
+from TranspositionMethods import TranspositionMethods as tm
 
-userInput = input("plaintext: ")
+text = input("text: ")
+rowLength = int(input("row length: "))
 
-VernamAlgo = vm(userInput)
+transDec = tm(text)
 
-cipherTextBytes, vernamKeyBytes = VernamAlgo.textEncrypt(VernamAlgo.text)
+cipherText, textMatrix = transDec.TextEncrypt(text, rowLength)
 
-plainText = VernamAlgo.textDecrypt(cipherTextBytes, vernamKeyBytes)
+print(cipherText)
+print(textMatrix)
+print("Decrypting")
 
-print("Decrypted Text: " + plainText)
+plainText = transDec.TextDecrypt(cipherText, rowLength)
+
+print(plainText)
