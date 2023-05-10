@@ -2,7 +2,7 @@ import os
 import sys
 from flask_cors import CORS
 from flask_restful import Api, Resource
-from flask import Flask
+from flask import Flask, request
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '../Algorithms'))
 from VernamMethods import VernamMethods as vm
@@ -78,14 +78,20 @@ class TextCustomDecrypt(Resource):
         
         return {"ciphertext" : cipherText, "plaintext" : plainText}
     
-class FileDecrypt(Resource):
-    def get(self, file, encKey, encMethod):
-        pass
+class FileEncrypt(Resource):
+    def post(self):
+        file = request.files['file']
+        file_contents = file.read()
+        encKey = request.form.get('encryptionkey')
+        encMethod = request.form.get('encryptionMethod')
+
+        return file_contents
+
 
 api.add_resource(TextEncrypt, "/TextEncrypt/<string:text>/<string:encKey>/<string:encMethod>")
 api.add_resource(TextDecrypt, "/TextDecrypt/<string:cipherText>/<string:encKey>/<string:encMethod>")
 api.add_resource(TextCustomDecrypt, "/TextCustomDecrypt/<string:cipherText>/<string:encKey>/<string:rawEncDecs>")
-api.add_resource(FileDecrypt, "/EncryptedFileUpload")
+api.add_resource(FileEncrypt, "/EncryptFileUpload")
 
 if __name__ == "__main__":
     app.run(debug=True)
