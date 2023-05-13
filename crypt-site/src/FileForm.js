@@ -47,6 +47,8 @@ function FileForm(){
                 const fileName = data.file.name;
                 const mimeType = data.file.mime_type;
 
+                setVernamKey(data.vernam)
+
                 // Decode the file data from base64
                 const fileContent = atob(fileData);
 

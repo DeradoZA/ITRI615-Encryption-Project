@@ -50,9 +50,9 @@ class VernamMethods:
 
         print(len(fileBytes))
 
-        for byte, vernamByteValue in zip(fileBytes, vernamKey):
+        for byte, vernamByte in zip(fileBytes, vernamKey):
 
-            decryptedByte = byte ^ vernamByteValue
+            decryptedByte = byte ^ vernamByte
 
             decryptedBytes = decryptedBytes + bytes([decryptedByte])
 

@@ -91,8 +91,18 @@ class FileEncrypt(Resource):
         if encMethod == 'Vernam':
             vernamEncryptor = vm(file_contents)
             cipherBytes, vernamKey = vernamEncryptor.fileEncrypt(file_contents)
+            vernamKeyDecoded = ''
+
+            print('file length in encryption: ' + str(len(file_contents)))
+            print("VernamKey 1 (not encoded in encrypt function): " + str(len(vernamKey)))
 
             vernamKey_b64 = base64.b64encode(vernamKey).decode('utf-8')
+
+            print("VernamKey 2 (encoded in encrypt function): " + str(len(vernamKey_b64)))
+
+            vernamKey_bytes = base64.b64decode(vernamKey_b64)
+
+            print("VernamKey 3 (undid encoding): " + str(len(vernamKey_bytes)))
 
             encryptedFileData = BytesIO()
             encryptedFileData.write(cipherBytes)
@@ -123,13 +133,26 @@ class FileDecrypt(Resource):
         rawEncDecs = request.form.get('rawEncDecs')
         customDecKey = request.form.get('customDecKey')
 
+        print('file length in decryption: ' + str(len(file_contents)))
+        print('vernam length recieved: ' + str(len(vernamKey)))
+
+        vernamKey_bytes = base64.b64decode(vernamKey)
+        file_bytes = base64.b64decode(file_contents)
+
+        print('length of file decoded in decryption' + str(len(file_bytes)))
+
+        print('vernam key decoded in decryption' + str(len(vernamKey_bytes)))
+
+
         if encMethod == 'Vernam':
             vernamDecryptor = vm(file_contents)
-            plainBytes = vernamDecryptor.fileDecrypt(file_contents, vernamKey)
+            plainBytes = vernamDecryptor.fileDecrypt(file_contents, vernamKey_bytes)
 
             decryptedFileData = BytesIO()
             decryptedFileData.write(plainBytes)
             decryptedFileData.seek(0)
+
+            vernamDecryptor.createDecryptedFile(plainBytes, file_name)
 
             fileInfo = os.path.splitext(file_name)
             decryptedFileName = fileInfo[0] + " - D" + fileInfo[1]
