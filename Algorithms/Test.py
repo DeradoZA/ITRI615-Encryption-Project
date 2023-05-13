@@ -1,13 +1,13 @@
-from Vigenere import Vigenere as vig
+from VernamMethods import VernamMethods
 
-text = input("text: ")
-key = input("key: ")
+vm = VernamMethods('lmao')
 
-cipherText = vig.textEncrypt(text, key)
+file = open('CMPG_311_DATACRAFTERS_PHASE2_DATABASE_DESIGN.pdf', "rb")
+file_contents = file.read()
 
-plainText = vig.textDecrypt(cipherText, key)
+cipherBytes, vernamKey = vm.fileEncrypt(file_contents)
 
-print(cipherText)
-print("Decrypting")
+plainBytes = vm.fileDecrypt(cipherBytes, vernamKey)
 
-print(plainText)
+vm.createEncryptedFile(cipherBytes, 'CMPG_311_DATACRAFTERS_PHASE2_DATABASE_DESIGN.pdf')
+vm.createDecryptedFile(plainBytes, 'CMPG_311_DATACRAFTERS_PHASE2_DATABASE_DESIGN.pdf')

@@ -1,5 +1,6 @@
 import random
 import os
+import base64
 
 
 class VernamMethods:
@@ -31,29 +32,27 @@ class VernamMethods:
         return decryptedText
 
     def fileEncrypt(self, fileBytes):
-
-        plainTextLength = len(fileBytes)
         cipherBytes = b""
         vernamKeyBytes = b""
 
-        for index in range(plainTextLength):
-            keyByte = bytes([random.randint(0, 255)])
-            plainFileByte = fileBytes[index]
+        for byte in fileBytes:
+            keyByteValue = random.randint(0, 255)
+            keyByte = bytes([keyByteValue])
 
             vernamKeyBytes = vernamKeyBytes + keyByte
-            cipherBytes = cipherBytes + bytes([plainFileByte ^ keyByte[index]])
+            cipherBytes = cipherBytes + bytes([byte ^ keyByteValue])
 
         return cipherBytes, vernamKeyBytes
 
     def fileDecrypt(self, fileBytes, vernamKey):
-        cipherTextLength = len(fileBytes)
+    
         decryptedBytes = b""
 
-        for index in range(cipherTextLength):
-            cipherByte = fileBytes[index]
-            vernamKeyByte = vernamKey[index]
+        print(len(fileBytes))
 
-            decryptedByte = cipherByte ^ vernamKeyByte
+        for byte, vernamByteValue in zip(fileBytes, vernamKey):
+
+            decryptedByte = byte ^ vernamByteValue
 
             decryptedBytes = decryptedBytes + bytes([decryptedByte])
 
@@ -61,7 +60,7 @@ class VernamMethods:
 
     def createEncryptedFile(self, cipherBytes, file):
         fileInfo = os.path.splitext(file)
-        encryptedFileName = "Encrypted" + fileInfo[1]
+        encryptedFileName = fileInfo[0] + " - E" + fileInfo[1]
         encryptedFile = open(encryptedFileName, "wb")
         encryptedFile.write(cipherBytes)
 
@@ -69,7 +68,7 @@ class VernamMethods:
 
     def createDecryptedFile(self, plainBytes, file):
         fileInfo = os.path.splitext(file)
-        decryptedFileName = "Decrypted" + fileInfo[1]
+        decryptedFileName = fileInfo[0] + " - D" + fileInfo[1]
         decryptedFile = open(decryptedFileName, "wb")
         decryptedFile.write(plainBytes)
 
