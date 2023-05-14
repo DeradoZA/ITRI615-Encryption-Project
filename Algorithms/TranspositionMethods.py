@@ -53,16 +53,63 @@ class TranspositionMethods:
         return plainText
         
         
-        
+    def FileEncrypt(self, fileBytes, rowLength):
+        byteMatrix = []
+        Row = []
+        cipherBytes = b""
+
+        for byte in fileBytes:
+            Row.append(byte)
+            if len(Row) == rowLength:
+                byteMatrix.append(Row)
+                Row = []
+                
+        if len(Row) == rowLength:
+            byteMatrix.append(Row)
+        elif len(Row) == 0:
+            pass
+        else:
+            paddingValue = rowLength - len(Row)
+            for _ in range(paddingValue):
+                Row.append(" ")
+            byteMatrix.append(Row)
+            
+        for index in range(rowLength):
+            for row in byteMatrix:
+                cipherBytes += bytes([row[index]])
+                
+        return cipherBytes
     
-    def FileEncrypt(self):
-        pass
+    def FileDecrypt(self, cipherBytes, rowLength):
+        byteMatrix = []
+        Row = []
+        plainBytes = b""
+
+        for byte in cipherBytes:
+            Row.append(byte)
+            if len(Row) == len(cipherBytes) // rowLength + (1 if len(cipherBytes) % rowLength > 0 else 0):
+                byteMatrix.append(Row)
+                Row = []
+
+        for index in range(len(byteMatrix[0])):
+            for row in byteMatrix:
+                if index < len(row):
+                    plainBytes += bytes([row[index]])
+
+        return plainBytes
     
-    def FileDecrypt(self):
-        pass
-    
-    def CreateEncryptFile(self):
-        pass
-    
-    def CreateDecryptFile(self):
-        pass
+    def createEncryptedFile(self, cipherBytes, file):
+        fileInfo = os.path.splitext(file)
+        encryptedFileName = fileInfo[0] + " - E" + fileInfo[1]
+        encryptedFile = open(encryptedFileName, "wb")
+        encryptedFile.write(cipherBytes)
+
+        encryptedFile.close()
+
+    def createDecryptedFile(self, plainBytes, file):
+        fileInfo = os.path.splitext(file)
+        decryptedFileName = fileInfo[0] + " - D" + fileInfo[1]
+        decryptedFile = open(decryptedFileName, "wb")
+        decryptedFile.write(plainBytes)
+
+        decryptedFile.close()

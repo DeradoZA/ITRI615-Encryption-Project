@@ -38,14 +38,46 @@ class CustomAlgoMethods:
 
         return plainText
 
-    def FileEncrypt(self):
-        pass
+    def FileEncrypt(self, fileBytes):
 
-    def FileDecrypt(self):
-        pass
+        customDecKey = []
+        rawEncryptedDecs = []
+        cipherBytes = b""
 
-    def CreateEncryptedFile(self):
-        pass
+        for byte in fileBytes:
+            randomKeyDec = random.randint(1, 256)
+            customDecKey.append(randomKeyDec)
 
-    def CreateDecryptedFile(self):
-        pass
+            encryptedRawDecimalValue = byte * randomKeyDec
+            encryptedDecimalValue = encryptedRawDecimalValue % 256
+            encryptedByteValue = encryptedDecimalValue.to_bytes(1, byteorder='big')
+            rawEncryptedDecs.append(encryptedRawDecimalValue)
+
+            cipherBytes += encryptedByteValue
+        
+        return cipherBytes, rawEncryptedDecs, customDecKey
+
+    def FileDecrypt(self, rawEncryptedDecs, customKey):
+        decryptedBytes = b""
+
+        for index in range(0, len(rawEncryptedDecs)):
+            decryptedByteDec = int(rawEncryptedDecs[index] / customKey[index])
+            decryptedBytes += decryptedByteDec.to_bytes(1, byteorder='big')
+
+        return decryptedBytes
+
+    def createEncryptedFile(self, cipherBytes, file):
+        fileInfo = os.path.splitext(file)
+        encryptedFileName = fileInfo[0] + " - E" + fileInfo[1]
+        encryptedFile = open(encryptedFileName, "wb")
+        encryptedFile.write(cipherBytes)
+
+        encryptedFile.close()
+
+    def createDecryptedFile(self, plainBytes, file):
+        fileInfo = os.path.splitext(file)
+        decryptedFileName = fileInfo[0] + " - D" + fileInfo[1]
+        decryptedFile = open(decryptedFileName, "wb")
+        decryptedFile.write(plainBytes)
+
+        decryptedFile.close()

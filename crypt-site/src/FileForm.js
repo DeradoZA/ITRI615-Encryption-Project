@@ -42,12 +42,12 @@ function FileForm(){
             response.json().then(data => {
                 console.log(data)
                 setVernamKey(data.vernam)
+                setRawEncDecs(data.rawEncDecs)
+                setCustomDecKey(data.CustomKey)
                 // Extract the file data
                 const fileData = data.file.data;
                 const fileName = data.file.name;
                 const mimeType = data.file.mime_type;
-
-                setVernamKey(data.vernam)
 
                 const fileContent = atob(fileData);
                 const uint8Array = new Uint8Array(fileContent.length);
@@ -101,7 +101,6 @@ function FileForm(){
                     <button style={{position : 'relative', left:'275px'}} onClick={() => setAction('Decrypt')}>Decrypt</button>
                 </form>
             </div>
-            <Output />
         </div>
     );
 }

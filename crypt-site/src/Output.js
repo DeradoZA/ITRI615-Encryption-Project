@@ -13,15 +13,6 @@ function Output(props){
             </div>
         );
     }
-    else{
-        return(
-            <div className="output">
-                <h1>Output</h1>
-                <a href="/filedownload">Download File</a>
-            </div>
-        );
-    }
-    
 }
 
 export default Output;
