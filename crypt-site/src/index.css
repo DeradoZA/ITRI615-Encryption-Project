@@ -54,7 +54,7 @@
 .file-form input, .file-form label{
   padding: 6px 10px;
   margin: 10px 0;
-  border: 1px solid #ddd;
+  border: 1px solid black;
   box-sizing: border-box;
   display: block;
 }
@@ -81,13 +81,14 @@
 .text-form input, .text-form label{
   padding: 6px 10px;
   margin: 10px 0;
-  border: 1px solid #ddd;
+  border: 1px solid black;
   box-sizing: border-box;
   display: block;
 }
 
 .text-form textarea{
   width : 100%;
+  border: 1px solid black;
 }
 
 .text-form button{
@@ -108,7 +109,7 @@
 .output label, textarea{
   padding: 6px 10px;
   margin: 10px 0;
-  border: 1px solid #ddd;
+  border: 1px solid black;
   box-sizing: border-box;
   display: block;
   width : 100%;

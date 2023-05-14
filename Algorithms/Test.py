@@ -1,15 +1,16 @@
 from VernamMethods import VernamMethods
 from TranspositionMethods import TranspositionMethods
 from CustomAlgoMethods import CustomAlgoMethods
-
-cam = CustomAlgoMethods('lmao')
+from Vigenere import Vigenere
 
 file = open('CMPG_311_DATACRAFTERS_PHASE2_DATABASE_DESIGN.pdf', "rb")
 file_contents = file.read()
 
-cipherBytes, rawEncsDecs, CustomKey = cam.FileEncrypt(file_contents)
+encKey = input("Enter the key: ")
 
-plainBytes = cam.FileDecrypt(rawEncsDecs, CustomKey)
+cipherBytes = Vigenere.fileEncrypt(file_contents, encKey)
 
-cam.createEncryptedFile(cipherBytes, 'CMPG_311_DATACRAFTERS_PHASE2_DATABASE_DESIGN.pdf')
-cam.createDecryptedFile(plainBytes, 'CMPG_311_DATACRAFTERS_PHASE2_DATABASE_DESIGN.pdf')
+plainBytes = Vigenere.fileDecrypt(cipherBytes, encKey)
+
+Vigenere.createEncryptedFile(cipherBytes, 'CMPG_311_DATACRAFTERS_PHASE2_DATABASE_DESIGN.pdf')
+Vigenere.createDecryptedFile(plainBytes, 'CMPG_311_DATACRAFTERS_PHASE2_DATABASE_DESIGN.pdf')

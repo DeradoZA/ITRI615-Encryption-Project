@@ -53,4 +53,12 @@ class Vigenere:
 
         encryptedFile.close()
 
+    def createDecryptedFile(plainBytes, file):
+        fileInfo = os.path.splitext(file)
+        decryptedFileName = fileInfo[0] + " - D" + fileInfo[1]
+        decryptedFile = open(decryptedFileName, "wb")
+        decryptedFile.write(plainBytes)
+
+        decryptedFile.close()
+
         
