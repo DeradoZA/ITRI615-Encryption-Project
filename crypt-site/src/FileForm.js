@@ -49,16 +49,17 @@ function FileForm(){
 
                 setVernamKey(data.vernam)
 
-                // Decode the file data from base64
                 const fileContent = atob(fileData);
-
-                // Create a Blob object from the file data
-                const blob = new Blob([fileContent], { type: mimeType });
-
-                // Create a URL for the Blob object
-                const url = window.URL.createObjectURL(blob);
-
-                // Create a link element for downloading the file
+                const uint8Array = new Uint8Array(fileContent.length);
+                
+                for (let i = 0; i < fileContent.length; i++) {
+                  uint8Array[i] = fileContent.charCodeAt(i);
+                }
+                
+                const file = new File([uint8Array], fileName, { type: mimeType });
+                
+                const url = URL.createObjectURL(file);
+                
                 const link = document.createElement('a');
                 link.href = url;
                 link.setAttribute('download', fileName);
