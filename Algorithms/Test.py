@@ -1,13 +1,15 @@
 from VernamMethods import VernamMethods
+from TranspositionMethods import TranspositionMethods
+from CustomAlgoMethods import CustomAlgoMethods
 
-vm = VernamMethods('lmao')
+cam = CustomAlgoMethods('lmao')
 
 file = open('CMPG_311_DATACRAFTERS_PHASE2_DATABASE_DESIGN.pdf', "rb")
 file_contents = file.read()
 
-cipherBytes, vernamKey = vm.fileEncrypt(file_contents)
+cipherBytes, rawEncsDecs, CustomKey = cam.FileEncrypt(file_contents)
 
-plainBytes = vm.fileDecrypt(cipherBytes, vernamKey)
+plainBytes = cam.FileDecrypt(rawEncsDecs, CustomKey)
 
-vm.createEncryptedFile(cipherBytes, 'CMPG_311_DATACRAFTERS_PHASE2_DATABASE_DESIGN.pdf')
-vm.createDecryptedFile(plainBytes, 'CMPG_311_DATACRAFTERS_PHASE2_DATABASE_DESIGN.pdf')
+cam.createEncryptedFile(cipherBytes, 'CMPG_311_DATACRAFTERS_PHASE2_DATABASE_DESIGN.pdf')
+cam.createDecryptedFile(plainBytes, 'CMPG_311_DATACRAFTERS_PHASE2_DATABASE_DESIGN.pdf')
