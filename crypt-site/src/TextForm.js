@@ -26,6 +26,7 @@ function TextForm(){
         formData.append('vernamKey', vernamKey);
         formData.append('rawEncDecs', rawEncDecs);
         formData.append('customDecKey', customDecKey);
+        console.log(formData);
 
         if (action === 'Encrypt'){
             url = 'http://127.0.0.1:5000/TextEncrypt'
@@ -42,8 +43,8 @@ function TextForm(){
             response.json().then(data => {
                 console.log(data)
                 setVernamKey(data.Vernam)
-                setRawEncDecs(data.rawEncDecs)
-                setCustomDecKey(data.CustomKey)
+                setRawEncDecs(data.rawEncryptedDecs)
+                setCustomDecKey(data.CustomDecKey)
                 setResultText(data.resulttext)
             });
             } else {

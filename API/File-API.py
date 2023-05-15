@@ -57,7 +57,7 @@ class TextDecrypt(Resource):
     def post(self):
 
         cipherText = request.form.get('text')
-        encKey = request.form.get('encryptionkey')
+        encKey = request.form.get('vernamKey')
         encMethod = request.form.get('encryptionMethod')
         rawEncDecs = request.form.get('rawEncDecs')
         customDecKey = request.form.get('customDecKey')
