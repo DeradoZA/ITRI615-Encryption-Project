@@ -13,94 +13,79 @@ function TextForm(){
     const [vernamKey, setVernamKey] = useState('');
     const [rawEncDecs, setRawEncDecs] = useState('');
     const [customDecKey, setCustomDecKey] = useState('');
+    const [action, setAction] = useState('');
+    let url = '';
 
     function handleSubmit(e){
         e.preventDefault();
-    }
 
-    function handleEncryptClick(){
-        fetch(`http://127.0.0.1:5000/TextEncrypt/${encodeURIComponent(text)}/${encodeURIComponent(encKey)}/${encodeURIComponent(encMethod)}`)
-        .then(res => {
-            return res.json();
-        }).then(data => {
-            console.log(data)
-            setResultText(data.ciphertext);
-            setVernamKey(data.Vernam);
-            setRawEncDecs(data.rawEncryptedDecs);
-            setCustomDecKey(data.CustomDecKey)});
-    }
+        const formData = new FormData();
+        formData.append('text', text);
+        formData.append('encryptionMethod', encMethod);
+        formData.append('encryptionkey', encKey);
+        formData.append('vernamKey', vernamKey);
+        formData.append('rawEncDecs', rawEncDecs);
+        formData.append('customDecKey', customDecKey);
 
-    function handleDecryptClick(){
-        if (encMethod === "Vernam"){
-            fetch(`http://127.0.0.1:5000/TextDecrypt/${encodeURIComponent(text)}/${encodeURIComponent(vernamKey)}/${encodeURIComponent(encMethod)}`)
-            .then(res => {
-                return res.json();
-            }).then(data => {
-                console.log(data);
-                setResultText(data.plaintext);
-            });
-        } else if (encMethod === "Transposition"){
-            fetch(`http://127.0.0.1:5000/TextDecrypt/${encodeURIComponent(text)}/${encodeURIComponent(encKey)}/${encodeURIComponent(encMethod)}`)
-            .then(res => {
-                return res.json();
-            }).then(data => {
-                console.log(data);
-                setResultText(data.plaintext);
-            });
-        } else if (encMethod === "Custom"){
-            fetch(`http://127.0.0.1:5000/TextCustomDecrypt/${encodeURIComponent(text)}/${encodeURIComponent(customDecKey)}/${encodeURIComponent(rawEncDecs)}`)
-            .then(res => {
-                return res.json();
-            }).then(data => {
-                console.log(data);
-                setResultText(data.plaintext);
-            });
-        } else if (encMethod === "Vigenere"){
-            fetch(`http://127.0.0.1:5000/TextDecrypt/${encodeURIComponent(text)}/${encodeURIComponent(encKey)}/${encodeURIComponent(encMethod)}`)
-            .then(res => {
-                return res.json();
-            }).then(data => {
-                console.log(data);
-                setResultText(data.plaintext);
-            });
+        if (action === 'Encrypt'){
+            url = 'http://127.0.0.1:5000/TextEncrypt'
+        }
+        else if (action === 'Decrypt'){
+            url = 'http://127.0.0.1:5000/TextDecrypt'
         }
 
-    }
-
-    useEffect(() => {
-        if (encMethod === "Vernam" || encMethod === "Custom"){
-            setEncKey("None");
+        fetch(url, {
+            method: 'POST',
+            body: formData
+        }).then(response => {
+            if (response.ok) {
+            response.json().then(data => {
+                console.log(data)
+                setVernamKey(data.Vernam)
+                setRawEncDecs(data.rawEncDecs)
+                setCustomDecKey(data.CustomKey)
+                setResultText(data.resulttext)
+            });
+            } else {
+            throw new Error('Network response was not ok');
+            }
+        }).catch(error => console.log(error));
         }
-    }, [encMethod])
 
-    return(
-        <div>
-        <div className="text-form">
-            <form onSubmit={handleSubmit}>
-                <label for="EncMethod">Encryption Method</label>
-                <select id="EncMethod" value={encMethod} onChange={(e) => setEncMethod(e.target.value)}>
-                    <option value ="Transposition">Transposition</option>
-                    <option value="Vernam">Vernam</option>
-                    <option value="Vigenere">Vigenere</option>
-                    <option value="Custom">Custom</option>
-                </select>
-                <br/><br/>
-                <label for="EncKey">Encryption Key</label>
-                <input type="text" id = "EncKey" value = {encKey} onChange={(e) => setEncKey(e.target.value)}></input>
-                <br/><br/>
-                <label for="text-input">Text</label>
-                <textarea
-                 id="text-input" rows='4' columns='100' value = {text} onChange={(e) => setText(e.target.value)}>
-                </textarea>
-                <br/>
-                <button style={{position : 'relative', left:'225px'}} onClick={handleEncryptClick}>Encrypt</button>
-                <button style={{position : 'relative', left:'275px'}} onClick={handleDecryptClick}>Decrypt</button>
-
-            </form>
-        </div>
-        <Output encMethod = {encMethod} encKey = {encKey} text = {resultText}/>
-        </div>
-    );
-}
+        useEffect(() => {
+            if (encMethod === "Vernam" || encMethod === "Custom"){
+                setEncKey("None");
+            }
+        }, [encMethod])
+    
+        return(
+            <div>
+            <div className="text-form">
+                <form onSubmit={handleSubmit}>
+                    <label for="EncMethod">Encryption Method</label>
+                    <select id="EncMethod" value={encMethod} onChange={(e) => setEncMethod(e.target.value)}>
+                        <option value ="Transposition">Transposition</option>
+                        <option value="Vernam">Vernam</option>
+                        <option value="Vigenere">Vigenere</option>
+                        <option value="Custom">Custom</option>
+                    </select>
+                    <br/><br/>
+                    <label for="EncKey">Encryption Key</label>
+                    <input type="text" id = "EncKey" value = {encKey} onChange={(e) => setEncKey(e.target.value)}></input>
+                    <br/><br/>
+                    <label for="text-input">Text</label>
+                    <textarea
+                     id="text-input" rows='4' columns='100' value = {text} onChange={(e) => setText(e.target.value)}>
+                    </textarea>
+                    <br/>
+                    <button style={{position : 'relative', left:'225px'}} onClick={() => setAction('Encrypt')}>Encrypt</button>
+                    <button style={{position : 'relative', left:'275px'}} onClick={() => setAction('Decrypt')}>Decrypt</button>
+    
+                </form>
+            </div>
+            <Output encMethod = {encMethod} encKey = {encKey} text = {resultText}/>
+            </div>
+        );
+    }
 
 export default TextForm;
