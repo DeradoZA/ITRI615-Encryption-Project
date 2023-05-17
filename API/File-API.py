@@ -57,7 +57,8 @@ class TextDecrypt(Resource):
     def post(self):
 
         cipherText = request.form.get('text')
-        encKey = request.form.get('vernamKey')
+        vernamKey = request.form.get('vernamKey')
+        encKey = request.form.get('encryptionkey')
         encMethod = request.form.get('encryptionMethod')
         rawEncDecs = request.form.get('rawEncDecs')
         customDecKey = request.form.get('customDecKey')
@@ -65,7 +66,7 @@ class TextDecrypt(Resource):
         if (encMethod == "Vernam"):
             vernamDecryptor = vm(cipherText)
 
-            plainText = vernamDecryptor.textDecrypt(cipherText, encKey)
+            plainText = vernamDecryptor.textDecrypt(cipherText, vernamKey)
 
             return {"ciphertext" : cipherText, "resulttext" : plainText}
         elif (encMethod == "Transposition"):

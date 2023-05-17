@@ -49,7 +49,7 @@ class Vigenere:
         fileInfo = os.path.splitext(file)
         encryptedFileName = "Encrypted" + fileInfo[1]
         encryptedFile = open(encryptedFileName, "wb")
-        encryptedFile.write(bytes(ciphertext, 'utf-8'))
+        encryptedFile.write(ciphertext)
 
         encryptedFile.close()
 
