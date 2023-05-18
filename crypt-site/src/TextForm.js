@@ -20,7 +20,6 @@ function TextForm(){
         e.preventDefault();
 
         const formData = new FormData();
-        formData.append('text', text);
         formData.append('encryptionMethod', encMethod);
         formData.append('encryptionkey', encKey);
         formData.append('vernamKey', vernamKey);
@@ -30,9 +29,11 @@ function TextForm(){
 
         if (action === 'Encrypt'){
             url = 'http://127.0.0.1:5000/TextEncrypt'
+            formData.append('text', text);
         }
         else if (action === 'Decrypt'){
             url = 'http://127.0.0.1:5000/TextDecrypt'
+            formData.append('text', resultText);
         }
 
         fetch(url, {
@@ -58,6 +59,7 @@ function TextForm(){
                 setEncKey("None");
             }
         }, [encMethod])
+
     
         return(
             <div>

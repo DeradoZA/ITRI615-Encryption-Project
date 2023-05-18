@@ -89,6 +89,7 @@
 .text-form textarea{
   width : 100%;
   border: 1px solid black;
+  white-space: pre;
 }
 
 .text-form button{
