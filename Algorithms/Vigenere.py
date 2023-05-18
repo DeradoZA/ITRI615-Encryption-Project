@@ -7,7 +7,11 @@ class Vigenere:
         encrypt=True
     ):
 
-        letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`~!@#$%^&*()-_=+/*[]{}\\|;:\'\",./<>? '
+        letters = "abcdefghijklmnopqrstuvwxyz"
+        letters += "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        letters += "1234567890"
+        letters += " !@#$%^&*()-_+=`~;:'[]{}|<>,./?"
+        letters += "\"\\"
         ciphertext = ''
         plaintext_value = 0
 
@@ -28,8 +32,8 @@ class Vigenere:
     def textEncrypt(plaintext, key):
         return Vigenere.vigenere(plaintext, key, True)
 
-    def textDecrypt(plaintext, key):
-        return Vigenere.vigenere(plaintext, key, False)
+    def textDecrypt(ciphertext, key):
+        return Vigenere.vigenere(ciphertext, key, False)
 
     def fileToBytes(file):
         readFile = open(file, 'rb')
@@ -52,7 +56,7 @@ class Vigenere:
         encryptedFile.write(ciphertext)
 
         encryptedFile.close()
-
+        
     def createDecryptedFile(plainBytes, file):
         fileInfo = os.path.splitext(file)
         decryptedFileName = fileInfo[0] + " - D" + fileInfo[1]
