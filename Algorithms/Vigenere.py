@@ -1,68 +1,93 @@
 import os
+import base64
 
 class Vigenere:
-    def vigenere(
-        plaintext,
-        key,
-        encrypt=True
-    ):
+    def __init__(self):
+        self.letters = bytes(range(256))
 
-        letters = "abcdefghijklmnopqrstuvwxyz"
-        letters += "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        letters += "1234567890"
-        letters += " !@#$%^&*()-_+=`~;:'[]{}|<>,./?"
-        letters += "\"\\"
-        ciphertext = ''
-        plaintext_value = 0
+    def vigenere(self, plaintext, key, encrypt=True):
+        ciphertext = bytearray()
 
         for i in range(len(plaintext)):
-            letter_index = letters.index(plaintext[i])
-            key_index = letters.index(key[i % len(key)])
+            letter_index = self.letters.index(plaintext[i])
+            key_index = self.letters.index(key[i % len(key)])
 
             if encrypt:
-                plaintext_value = (letter_index + key_index) % len(letters)
-
+                plaintext_value = (letter_index + key_index) % len(self.letters)
             if not encrypt:
-                plaintext_value = (letter_index - key_index) % len(letters)
+                plaintext_value = (letter_index - key_index) % len(self.letters)
 
-            ciphertext += letters[plaintext_value]
+            ciphertext.append(self.letters[plaintext_value])
 
-        return ciphertext
+        return bytes(ciphertext)
+    
+    def textEncrypt(self, plaintext, key):
+        plaintext_bytes = plaintext.encode('utf-8') 
+        key_bytes = key.encode('utf-8')
+        cipher_bytes = self.vigenere(plaintext_bytes, key_bytes, True)
+    
+        return base64.b64encode(cipher_bytes).decode('utf-8')
 
-    def textEncrypt(plaintext, key):
-        return Vigenere.vigenere(plaintext, key, True)
+    def textDecrypt(self, ciphertext, key):
+        key_bytes = key.encode('utf-8')
+        
+        ciphertext_bytes = base64.b64decode(ciphertext.encode('utf-8'))
+        plain_bytes = self.vigenere(ciphertext_bytes, key_bytes, False)
+        return plain_bytes.decode('utf-8')
 
-    def textDecrypt(ciphertext, key):
-        return Vigenere.vigenere(ciphertext, key, False)
+    def createEncryptedFile(self, file, key):
+        fileInfo = os.path.splitext(file)
+        newFileName = fileInfo[0] + 'Encrypted' + fileInfo[1]
+        key_bytes = key.encode()
 
-    def fileToBytes(file):
         readFile = open(file, 'rb')
         file_bytes = readFile.read()
         readFile.close()
-    
-        return file_bytes
 
-    def fileEncrypt(plaintext, key):
-        ciphertext = Vigenere.vigenere(plaintext, key, True)
-        return ciphertext
+        cipher_bytes = self.vigenere(file_bytes, key_bytes, True)
 
-    def fileDecrypt(ciphertext, key):
-        return Vigenere.vigenere(ciphertext, key, False)
-    
-    def createEncryptedFile(ciphertext, file):
+        newFile = open(newFileName, 'wb')
+        newFile.write(cipher_bytes)
+        newFile.close()
+
+    def createDecryptedFile(self, file, key):
         fileInfo = os.path.splitext(file)
-        encryptedFileName = "Encrypted" + fileInfo[1]
-        encryptedFile = open(encryptedFileName, "wb")
-        encryptedFile.write(ciphertext)
+        newFileName = fileInfo[0] + 'Decrypted' + fileInfo[1]
+        key_bytes = key.encode()
 
-        encryptedFile.close()
+        readFile = open(file, 'rb')
+        file_bytes = readFile.read()
+        readFile.close()
+
+        plain_bytes = self.vigenere(file_bytes, key_bytes, False)
+
+        newFile = open(newFileName, 'wb')
+        newFile.write(plain_bytes)
+        newFile.close()
         
-    def createDecryptedFile(plainBytes, file):
-        fileInfo = os.path.splitext(file)
-        decryptedFileName = fileInfo[0] + " - D" + fileInfo[1]
-        decryptedFile = open(decryptedFileName, "wb")
-        decryptedFile.write(plainBytes)
+def main():
+    vig = Vigenere()
 
-        decryptedFile.close()
+    # Test on text
+    print("Text encryption/decryption")
+    plaintext = "Hello, World!"
+    key = "lock"
+    
+    encrypted_text = vig.textEncrypt(plaintext, key)
+    print("Encrypted Text:", encrypted_text)
+    decrypted_text = vig.textDecrypt(encrypted_text, key)
+    print("Decrypted Text:", decrypted_text)
 
-        
+    # Test on file
+    print("File encryption/decryption")
+    file = 'Test3.pptx'
+
+    file_name, file_extension = os.path.splitext(file)
+
+    encrypted_file_name = file_name + "Encrypted" + file_extension
+
+    vig.createEncryptedFile(file, key)
+    vig.createDecryptedFile(encrypted_file_name, key)
+
+if __name__ == "__main__":
+    main()
