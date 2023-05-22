@@ -80,7 +80,7 @@ def main():
 
     # Test on file
     print("File encryption/decryption")
-    file = 'Test3.pptx'
+    file = 'CMPG_311_DATACRAFTERS_PHASE2_DATABASE_DESIGN.pdf'
 
     file_name, file_extension = os.path.splitext(file)
 

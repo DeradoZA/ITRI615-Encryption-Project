@@ -49,10 +49,10 @@ class TextEncrypt(Resource):
         elif(encMethod == "Vigenere"):
             VigenereEncryptor = vig()
 
-            cipherText = vig.textEncrypt(text, encKey)
+            cipherText = VigenereEncryptor.textEncrypt(text, encKey)
 
             return {"plaintext" : text, "resulttext" : cipherText}
-        
+    
 class TextDecrypt(Resource):
     def post(self):
 
@@ -77,9 +77,10 @@ class TextDecrypt(Resource):
             return {"ciphertext" : cipherText, "resulttext" : plainText}
         elif (encMethod == "Vigenere"):
             VigenereDecryptor = vig()
-            plainText = vig.textDecrypt(cipherText, encKey)
+            plainText = VigenereDecryptor.textDecrypt(cipherText, encKey)
 
             return {"ciphertext" : cipherText, "resulttext" : plainText}
+    
         elif (encMethod == "Custom"):
              
              encKeyValues = customDecKey.split(",")
@@ -149,7 +150,26 @@ class FileEncrypt(Resource):
             return jsonify(response_data)
 
         if encMethod == 'Vigenere':
-            pass
+            VigenereEncryptor = vig()
+            key_bytes = encKey.encode()
+            cipherBytes = VigenereEncryptor.vigenere(file_contents, key_bytes, True)
+
+            encryptedFileData = BytesIO()
+            encryptedFileData.write(cipherBytes)
+            encryptedFileData.seek(0)
+
+            fileInfo = os.path.splitext(file_name)
+            encryptedFileName = fileInfo[0] + " - E" + fileInfo[1]
+
+            response_data = {
+                'file': {
+                    'data': base64.b64encode(encryptedFileData.getvalue()).decode('utf-8'),
+                    'name': encryptedFileName,
+                    'mime_type': 'application/octet-stream'
+                }
+            }
+
+            return jsonify(response_data)
 
         if encMethod == 'Custom':
             customEncryptor = cam(file_contents)
@@ -231,7 +251,26 @@ class FileDecrypt(Resource):
             return jsonify(response_data)
 
         if encMethod == 'Vigenere':
-            pass
+            VigenereDecryptor = vig()
+            key_bytes = encKey.encode()
+            plainBytes = VigenereDecryptor.vigenere(file_contents, key_bytes, False)
+
+            decryptedFileData = BytesIO()
+            decryptedFileData.write(plainBytes)
+            decryptedFileData.seek(0)
+
+            fileInfo = os.path.splitext(file_name)
+            decryptedFileName = fileInfo[0] + " - D" + fileInfo[1]
+
+            response_data = {
+                'file': {
+                    'data': base64.b64encode(decryptedFileData.getvalue()).decode('utf-8'),
+                    'name': decryptedFileName,
+                    'mime_type': 'application/octet-stream'
+                }
+            }
+
+            return jsonify(response_data)
 
         if encMethod == 'Custom':
             encKeyValues = customDecKey.split(",")
