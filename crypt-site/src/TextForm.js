@@ -65,7 +65,7 @@ function TextForm(){
             <div>
             <div className="text-form">
                 <form onSubmit={handleSubmit}>
-                    <label for="EncMethod">Encryption Method</label>
+                    <label for="EncMethod">Method</label>
                     <select id="EncMethod" value={encMethod} onChange={(e) => setEncMethod(e.target.value)}>
                         <option value ="Transposition">Transposition</option>
                         <option value="Vernam">Vernam</option>
@@ -73,7 +73,7 @@ function TextForm(){
                         <option value="Custom">Custom</option>
                     </select>
                     <br/><br/>
-                    <label for="EncKey">Encryption Key</label>
+                    <label for="EncKey">Key</label>
                     <input type="text" id = "EncKey" value = {encKey} onChange={(e) => setEncKey(e.target.value)}></input>
                     <br/><br/>
                     <label for="text-input">Text</label>

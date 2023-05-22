@@ -83,7 +83,7 @@ function FileForm(){
         <div>
             <div className="file-form">
                 <form onSubmit={handleSubmit}>
-                    <label htmlFor="EncMethod">Encryption Method</label>
+                    <label htmlFor="EncMethod">Method</label>
                     <select id="EncMethod" name="encryptionMethod" value={encMethod} onChange={(e) => {setEncMethod(e.target.value)}}>
                         <option value ="Transposition">Transposition</option>
                         <option value="Vernam">Vernam</option>
@@ -91,7 +91,7 @@ function FileForm(){
                         <option value="Custom">Custom</option>
                     </select>
                     <br/><br/>
-                    <label for="key">Encryption key:</label>
+                    <label for="key">Key</label>
                     <input type="text" id="key" value={encKey} onChange={(e) => {setEncKey(e.target.value)}}/>
                     <br/><br/>
                     <label for="fileupload">Upload File</label>
