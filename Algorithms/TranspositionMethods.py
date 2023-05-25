@@ -71,7 +71,7 @@ class TranspositionMethods:
         else:
             paddingValue = rowLength - len(Row)
             for _ in range(paddingValue):
-                Row.append(" ")
+                Row.append(0)
             byteMatrix.append(Row)
             
         for index in range(rowLength):
