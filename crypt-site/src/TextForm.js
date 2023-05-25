@@ -25,7 +25,6 @@ function TextForm(){
         formData.append('vernamKey', vernamKey);
         formData.append('rawEncDecs', rawEncDecs);
         formData.append('customDecKey', customDecKey);
-        console.log(formData);
 
         if (action === 'Encrypt'){
             url = 'http://127.0.0.1:5000/TextEncrypt'
@@ -34,7 +33,10 @@ function TextForm(){
         else if (action === 'Decrypt'){
             url = 'http://127.0.0.1:5000/TextDecrypt'
             formData.append('text', resultText);
+            console.log(resultText);
         }
+
+        console.log(formData);
 
         fetch(url, {
             method: 'POST',

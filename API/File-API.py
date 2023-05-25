@@ -63,6 +63,12 @@ class TextDecrypt(Resource):
         rawEncDecs = request.form.get('rawEncDecs')
         customDecKey = request.form.get('customDecKey')
 
+        if '\n' in cipherText:  
+            cipherText = cipherText.replace('\r', '')
+        elif '\r' in cipherText:
+            cipherText = cipherText.replace('\n','')
+
+
         if (encMethod == "Vernam"):
             vernamDecryptor = vm(cipherText)
 
