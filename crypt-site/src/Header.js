@@ -1,7 +1,7 @@
 function Header(){
     return(
         <div className="header">
-            <h1>ITRI615 Encryption Project</h1>
+            <h1>Crypt</h1>
         </div>
     );
 }
